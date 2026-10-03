@@ -430,6 +430,58 @@ document.querySelector("#profileButton").addEventListener("click", () => {
   showToast("Профиль скоро появится");
 });
 
+const installButton = document.querySelector("#installButton");
+let installPromptEvent = null;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches
+  || navigator.standalone === true;
+
+if (isIOS && !isStandalone) installButton.hidden = false;
+
+installButton.addEventListener("click", async () => {
+  if (!installPromptEvent) {
+    showToast("В Safari нажмите «Поделиться» → «На экран Домой»");
+    return;
+  }
+
+  const promptEvent = installPromptEvent;
+  installPromptEvent = null;
+  installButton.disabled = true;
+
+  try {
+    await promptEvent.prompt();
+    const { outcome } = await promptEvent.userChoice;
+    if (outcome === "accepted") showToast("Reviewly установлено на устройство");
+  } catch (error) {
+    console.error("Не удалось открыть установку Reviewly.", error);
+    showToast("Не удалось начать установку приложения");
+  } finally {
+    installButton.disabled = false;
+    installButton.hidden = true;
+  }
+});
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  installPromptEvent = event;
+  installButton.hidden = false;
+});
+
+window.addEventListener("appinstalled", () => {
+  installPromptEvent = null;
+  installButton.hidden = true;
+  showToast("Reviewly установлено на устройство");
+});
+
 renderFilters();
 renderReviews();
 updateRatingPicker();
+
+if ("serviceWorker" in navigator && window.isSecureContext) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+      console.error("Не удалось зарегистрировать service worker.", error);
+    });
+  });
+}

@@ -8,7 +8,14 @@
       name="description"
       content="Reviewly — честные впечатления и отзывы от людей."
     />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Reviewly" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>Reviewly — отзывы, которым верят</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,12 +32,26 @@
           <span class="brand-mark" aria-hidden="true">r</span>
           <span class="brand-name">reviewly</span>
         </a>
-        <button class="profile-button" id="profileButton" type="button" aria-label="Профиль">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20 21a8 8 0 0 0-16 0" />
-            <circle cx="12" cy="8" r="4" />
-          </svg>
-        </button>
+        <div class="header-actions">
+          <button
+            class="profile-button install-button"
+            id="installButton"
+            type="button"
+            aria-label="Установить Reviewly"
+            title="Установить Reviewly"
+            hidden
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 16v4h14v-4" />
+            </svg>
+          </button>
+          <button class="profile-button" id="profileButton" type="button" aria-label="Профиль">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 21a8 8 0 0 0-16 0" />
+              <circle cx="12" cy="8" r="4" />
+            </svg>
+          </button>
+        </div>
       </header>
 
       <main class="main-content">
