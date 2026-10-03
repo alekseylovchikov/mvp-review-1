@@ -203,6 +203,13 @@ function renderReview(review) {
   `;
 }
 
+function updateLikeButton(button, review) {
+  button.classList.toggle("is-liked", review.liked);
+  button.setAttribute("aria-label", review.liked ? "Убрать отметку «Нравится»" : "Нравится");
+  button.setAttribute("aria-pressed", String(review.liked));
+  button.querySelector("span").textContent = String(review.likes);
+}
+
 function getVisibleReviews() {
   return reviews.filter((review) => {
     const matchesCategory = activeCategory === "Все" || review.category === activeCategory;
@@ -330,7 +337,7 @@ reviewList.addEventListener("click", (event) => {
   if (button.dataset.action === "like") {
     review.liked = !review.liked;
     review.likes += review.liked ? 1 : -1;
-    renderReviews();
+    updateLikeButton(button, review);
     return;
   }
 
